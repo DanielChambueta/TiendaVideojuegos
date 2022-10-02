@@ -1,20 +1,35 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package tiendaGUI;
 
-/**
- *
- * @author danie
- */
+import conexion.conexion;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 public class catalogoGUI extends javax.swing.JFrame {
+
+    DefaultTableModel model;
 
     /**
      * Creates new form catalogoGUI
      */
     public catalogoGUI() {
         initComponents();
+
+        //Quita la opcion de Minimizar la ventana
+        setLocationRelativeTo(null);
+        //Deshabilita la opcion de redimencionar la ventana
+        setResizable(false);
+        //Pone un titulo a la ventana
+        setTitle("Tienda de Videojuegos");
+
+        //Incluye la cabecera de la tabla de cesta
+        String[] cabecera = {"Videojuego", "Categoria", "Cantidad", "Subtotal"};
+        model = new DefaultTableModel(null, cabecera);
+        tblCesta.setModel(model);
+
+        //Llena el combo box con los Videojuegos de la base de datos
+        getListaJuegos();
     }
 
     /**
@@ -39,10 +54,15 @@ public class catalogoGUI extends javax.swing.JFrame {
         lbCanDisponible = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
         btnQuitar = new javax.swing.JButton();
+        lbNombreJuego = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         lbTituloCesta = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbCesta = new javax.swing.JTable();
+        tblCesta = new javax.swing.JTable();
+        btnPagar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         lbUserName = new javax.swing.JLabel();
         lbSaldo = new javax.swing.JLabel();
@@ -75,13 +95,36 @@ public class catalogoGUI extends javax.swing.JFrame {
 
         lbCompatibilidad.setText("Compatibilidad:");
 
+        cbListaJuegos.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbListaJuegosItemStateChanged(evt);
+            }
+        });
+        cbListaJuegos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbListaJuegosActionPerformed(evt);
+            }
+        });
+
         lbCantidad.setText("Cantidad:");
 
         lbCanDisponible.setText("# Disponibles");
 
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         btnQuitar.setText("Quitar");
+        btnQuitar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuitarActionPerformed(evt);
+            }
+        });
+
+        lbNombreJuego.setText("Nombre:");
 
         javax.swing.GroupLayout bodyLayout = new javax.swing.GroupLayout(body);
         body.setLayout(bodyLayout);
@@ -90,29 +133,30 @@ public class catalogoGUI extends javax.swing.JFrame {
             .addGroup(bodyLayout.createSequentialGroup()
                 .addGroup(bodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(bodyLayout.createSequentialGroup()
+                        .addGap(124, 124, 124)
+                        .addComponent(lbImgJuego, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(bodyLayout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addGroup(bodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(lbCategoria, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lbTamano, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lbPrecio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbListaJuegos, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbListaJuegos, 0, 281, Short.MAX_VALUE)
                             .addComponent(lbCompatibilidad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, bodyLayout.createSequentialGroup()
-                                .addComponent(lbCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(spCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(12, 12, 12)
-                                .addComponent(lbCanDisponible, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(bodyLayout.createSequentialGroup()
-                        .addGap(124, 124, 124)
-                        .addComponent(lbImgJuego, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(lbNombreJuego, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(bodyLayout.createSequentialGroup()
+                                .addComponent(lbCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(spCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(lbCanDisponible, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(21, 21, 21))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bodyLayout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(btnAgregar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnQuitar)))
                 .addGap(0, 32, Short.MAX_VALUE))
-            .addGroup(bodyLayout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(btnAgregar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnQuitar)
-                .addGap(74, 74, 74))
         );
         bodyLayout.setVerticalGroup(
             bodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,7 +165,9 @@ public class catalogoGUI extends javax.swing.JFrame {
                 .addComponent(lbImgJuego, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(cbListaJuegos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(10, 10, 10)
+                .addComponent(lbNombreJuego)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbPrecio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbTamano)
@@ -136,14 +182,16 @@ public class catalogoGUI extends javax.swing.JFrame {
                     .addComponent(lbCanDisponible, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(bodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAgregar)
-                    .addComponent(btnQuitar))
-                .addGap(43, 43, 43))
+                    .addComponent(btnQuitar)
+                    .addComponent(btnAgregar))
+                .addGap(21, 21, 21))
         );
 
+        lbTituloCesta.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lbTituloCesta.setText("Cesta de Productos");
+        lbTituloCesta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        tbCesta.setModel(new javax.swing.table.DefaultTableModel(
+        tblCesta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -154,30 +202,62 @@ public class catalogoGUI extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane1.setViewportView(tbCesta);
+        jScrollPane1.setViewportView(tblCesta);
+
+        btnPagar.setText("Pagar");
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setText("Subtotal: ");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setText("Descuento: ");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setText("Total");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnPagar)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(lbTituloCesta, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(135, 135, 135))))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap())))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbTituloCesta)
+                .addGap(167, 167, 167))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(12, 12, 12)
                 .addComponent(lbTituloCesta, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPagar)
+                    .addComponent(jLabel3))
+                .addGap(20, 20, 20))
         );
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 255));
@@ -187,8 +267,18 @@ public class catalogoGUI extends javax.swing.JFrame {
         lbSaldo.setText("Saldo");
 
         btnCuenta.setText("Cuenta");
+        btnCuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCuentaActionPerformed(evt);
+            }
+        });
 
         btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -269,6 +359,90 @@ public class catalogoGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void getListaJuegos() {
+
+        conexion objConexion = new conexion();
+
+        try {
+            ResultSet resultado = objConexion.consultarRegistros("SELECT nombreVideojuego FROM videojuegos");
+
+            while (resultado.next()) {
+                cbListaJuegos.addItem(resultado.getString("nombreVideojuego"));
+                //add(cbListaJuegos);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    private void btnCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCuentaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCuentaActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        //Crea una conexion con la Base de Datos
+        conexion objConexion = new conexion();
+
+        try {
+            //Sentencia de Select
+            String strSentenciaSelect = String.format("SELECT * FROM videojuegos WHERE nombreVideojuego = '%s'", cbListaJuegos.getSelectedItem());
+            //Ejecucion de la Sentencia Select
+            ResultSet resultado = objConexion.consultarRegistros(strSentenciaSelect);
+
+            
+            
+            //Busca la coincidencia de la consulta
+            if (resultado.next()) {
+                int cant = (int) spCantidad.getValue();
+                double prec = resultado.getDouble("precio");
+                double subtotal = cant * prec;
+                
+                Object oVideojuego[] = {resultado.getString("nombreVideojuego"),resultado.getString("categoria"),spCantidad.getValue(), subtotal};
+                model.addRow(oVideojuego);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnQuitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnQuitarActionPerformed
+
+    private void cbListaJuegosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbListaJuegosActionPerformed
+//        lbPrecio.setText("Hola");
+    }//GEN-LAST:event_cbListaJuegosActionPerformed
+
+    private void cbListaJuegosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbListaJuegosItemStateChanged
+        //Crea una conexion con la Base de Datos
+        conexion objConexion = new conexion();
+
+        try {
+            //Sentencia de Select
+            String strSentenciaSelect = String.format("SELECT * FROM videojuegos WHERE nombreVideojuego = '%s'", cbListaJuegos.getSelectedItem());
+            //Ejecucion de la Sentencia Select
+            ResultSet resultado = objConexion.consultarRegistros(strSentenciaSelect);
+
+            //Busca la coincidencia de la consulta
+            if (resultado.next()) {
+                lbNombreJuego.setText("Nombre: " + resultado.getString("nombreVideojuego"));
+                lbCategoria.setText("Categoria: " + resultado.getString("categoria"));
+                lbTamano.setText("Tamaño: " + resultado.getString("peso") + " KB");
+                lbCompatibilidad.setText("Compatibilidad: " + resultado.getString("compatibilidad"));
+                lbPrecio.setText("Precio: $" + resultado.getString("precio"));
+                lbCanDisponible.setText("/ " + resultado.getString("cantidad"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_cbListaJuegosItemStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -308,10 +482,14 @@ public class catalogoGUI extends javax.swing.JFrame {
     private javax.swing.JPanel body;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnCuenta;
+    private javax.swing.JButton btnPagar;
     private javax.swing.JButton btnQuitar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JComboBox<String> cbListaJuegos;
     private javax.swing.JPanel head;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -321,12 +499,13 @@ public class catalogoGUI extends javax.swing.JFrame {
     private javax.swing.JLabel lbCategoria;
     private javax.swing.JLabel lbCompatibilidad;
     private javax.swing.JLabel lbImgJuego;
+    private javax.swing.JLabel lbNombreJuego;
     private javax.swing.JLabel lbPrecio;
     private javax.swing.JLabel lbSaldo;
     private javax.swing.JLabel lbTamano;
     private javax.swing.JLabel lbTituloCesta;
     private javax.swing.JLabel lbUserName;
     private javax.swing.JSpinner spCantidad;
-    private javax.swing.JTable tbCesta;
+    private javax.swing.JTable tblCesta;
     // End of variables declaration//GEN-END:variables
 }
