@@ -16,7 +16,7 @@ CREATE TABLE usuarios(
   nickname VARCHAR(16) NOT NULL,
   pass VARCHAR(255) NOT NULL,
   saldo FLOAT NOT NULL,
-  rol VARCHAR(12) NOT NULL
+  rol VARCHAR(15) NOT NULL
 );
 
 CREATE TABLE videojuegos(

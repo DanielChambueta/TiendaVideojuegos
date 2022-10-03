@@ -68,10 +68,12 @@ public class catalogoGUI extends javax.swing.JFrame {
         lbDescuento = new javax.swing.JLabel();
         lbTotal = new javax.swing.JLabel();
         InfoUsuario = new javax.swing.JPanel();
-        lbUserName = new javax.swing.JLabel();
-        lbSaldo = new javax.swing.JLabel();
+        lbU = new javax.swing.JLabel();
+        lbS = new javax.swing.JLabel();
         btnCuenta = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
+        lbUsuario = new javax.swing.JLabel();
+        lbSaldo = new javax.swing.JLabel();
         Footer = new javax.swing.JPanel();
         DanielChambueta = new javax.swing.JLabel();
 
@@ -219,7 +221,6 @@ public class catalogoGUI extends javax.swing.JFrame {
 
             }
         ));
-        tblCesta.setEnabled(false);
         tblCesta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblCestaMouseClicked(evt);
@@ -271,7 +272,7 @@ public class catalogoGUI extends javax.swing.JFrame {
                             .addComponent(lbDescuento, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
                             .addComponent(lbTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lbSubtotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CestaLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbTituloCesta)
@@ -306,9 +307,11 @@ public class catalogoGUI extends javax.swing.JFrame {
 
         InfoUsuario.setBackground(new java.awt.Color(204, 204, 255));
 
-        lbUserName.setText("Nombre:");
+        lbU.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lbU.setText("Nombre:");
 
-        lbSaldo.setText("Saldo:");
+        lbS.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lbS.setText("Saldo: $");
 
         btnCuenta.setText("Cuenta");
         btnCuenta.addActionListener(new java.awt.event.ActionListener() {
@@ -332,23 +335,35 @@ public class catalogoGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(InfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(InfoUsuarioLayout.createSequentialGroup()
-                        .addGroup(InfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbUserName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())
-                    .addGroup(InfoUsuarioLayout.createSequentialGroup()
                         .addComponent(btnCuenta)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSalir)
-                        .addGap(26, 26, 26))))
+                        .addGap(26, 26, 26))
+                    .addGroup(InfoUsuarioLayout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addGroup(InfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbS)
+                            .addComponent(lbU))
+                        .addGap(0, 0, 0)
+                        .addGroup(InfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                            .addComponent(lbSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         InfoUsuarioLayout.setVerticalGroup(
             InfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(InfoUsuarioLayout.createSequentialGroup()
                 .addContainerGap(11, Short.MAX_VALUE)
-                .addComponent(lbUserName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbSaldo)
+                .addGroup(InfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbU)
+                    .addComponent(lbUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(InfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(InfoUsuarioLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(lbS))
+                    .addGroup(InfoUsuarioLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(lbSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(InfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCuenta)
@@ -645,12 +660,14 @@ public class catalogoGUI extends javax.swing.JFrame {
     private javax.swing.JLabel lbImgJuego;
     private javax.swing.JLabel lbNombreJuego;
     private javax.swing.JLabel lbPrecio;
-    private javax.swing.JLabel lbSaldo;
+    private javax.swing.JLabel lbS;
+    public javax.swing.JLabel lbSaldo;
     private javax.swing.JLabel lbSubtotal;
     private javax.swing.JLabel lbTamano;
     private javax.swing.JLabel lbTituloCesta;
     private javax.swing.JLabel lbTotal;
-    private javax.swing.JLabel lbUserName;
+    private javax.swing.JLabel lbU;
+    public javax.swing.JLabel lbUsuario;
     private javax.swing.JSpinner spCantidad;
     private javax.swing.JTable tblCesta;
     // End of variables declaration//GEN-END:variables

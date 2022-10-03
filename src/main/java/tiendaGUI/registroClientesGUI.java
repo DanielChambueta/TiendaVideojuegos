@@ -80,6 +80,11 @@ public class registroClientesGUI extends javax.swing.JFrame {
         });
 
         btnVolver.setText("Volver");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
 
         jLabel10.setText("Campos Obligatorios (*)");
 
@@ -212,6 +217,12 @@ public class registroClientesGUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        loginClientesGUI ver = new loginClientesGUI();
+        ver.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
 
     /**
      * @param args the command line arguments
