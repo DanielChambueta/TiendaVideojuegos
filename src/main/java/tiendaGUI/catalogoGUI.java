@@ -219,6 +219,7 @@ public class catalogoGUI extends javax.swing.JFrame {
 
             }
         ));
+        tblCesta.setEnabled(false);
         tblCesta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblCestaMouseClicked(evt);
