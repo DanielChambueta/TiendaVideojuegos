@@ -3,6 +3,8 @@ package tiendaGUI;
 import conexion.conexion;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 public class loginClientesGUI extends javax.swing.JFrame {
 
@@ -33,13 +35,17 @@ public class loginClientesGUI extends javax.swing.JFrame {
         txtContrasena = new javax.swing.JPasswordField();
         btnIniciar = new javax.swing.JButton();
         btnRegistrarme = new javax.swing.JButton();
+        btnCerrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(230, 230, 230));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Inicio de Sesion");
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jLabel2.setText("Usuario");
 
@@ -52,12 +58,23 @@ public class loginClientesGUI extends javax.swing.JFrame {
             }
         });
 
+        btnRegistrarme.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        btnRegistrarme.setForeground(new java.awt.Color(102, 102, 102));
         btnRegistrarme.setText("Registrarme");
         btnRegistrarme.setBorder(null);
         btnRegistrarme.setBorderPainted(false);
+        btnRegistrarme.setContentAreaFilled(false);
         btnRegistrarme.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegistrarmeActionPerformed(evt);
+            }
+        });
+
+        btnCerrar.setBorderPainted(false);
+        btnCerrar.setContentAreaFilled(false);
+        btnCerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarActionPerformed(evt);
             }
         });
 
@@ -65,46 +82,52 @@ public class loginClientesGUI extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(22, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(61, 61, 61)
-                        .addComponent(jLabel1)))
-                .addContainerGap(12, Short.MAX_VALUE))
+                            .addComponent(txtContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(20, 20, 20))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(49, 49, 49))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRegistrarme, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(87, 87, 87))
+                    .addComponent(btnRegistrarme, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(101, 101, 101))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addContainerGap()
+                .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
+                .addGap(21, 21, 21)
                 .addComponent(btnIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRegistrarme, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGap(27, 27, 27))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -113,8 +136,8 @@ public class loginClientesGUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(10, 10, 10))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,33 +151,40 @@ public class loginClientesGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
-        //Crea una conexion con la Base de Datos
-        conexion objConexion = new conexion();
-        try {
-            //Select del Juego seleccionado en el ComboBox
-            String strSentenciaSelect = String.format("SELECT * FROM usuarios WHERE nickname = '%s' AND pass = '%s'", txtUsuario.getText(), txtContrasena.getText());
-            //Ejecucion de la Sentencia Select
-            ResultSet resultado = objConexion.consultarRegistros(strSentenciaSelect);
-            //Asigna la Respectiva Informacion del Juego
-            if (resultado.next()) {
-                Object persona[] = {resultado.getString("idUsuario"),resultado.getString("nickname"),resultado.getString("saldo")};
-                
-                String rol = resultado.getString("rol");
-                if (rol.equals("Cliente")) {
-                    catalogoGUI ver = new catalogoGUI();
-                    ver.setVisible(true);
-                    this.dispose();
-                    ver.lbUsuario.setText(resultado.getString("nickname"));
-                    ver.lbSaldo.setText(resultado.getString("saldo"));
-                    catalogoGUI.setUser(persona);
+        //Verifica que los campos no esten vacios    
+        if (txtUsuario.getText().equals("") || txtContrasena.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Ingrese el usuario y contraseña");
+        } else {
+            //Crea una conexion con la Base de Datos
+            conexion objConexion = new conexion();
+            try {
+                //Select del Juego seleccionado en el ComboBox
+                String strSentenciaSelect = String.format("SELECT * FROM usuarios WHERE nickname = '%s' AND pass = '%s'", txtUsuario.getText(), txtContrasena.getText());
+                //Ejecucion de la Sentencia Select
+                ResultSet resultado = objConexion.consultarRegistros(strSentenciaSelect);
+                //Asigna la Respectiva Informacion del Juego
+                if (resultado.next()) {
+                    Object persona[] = {resultado.getString("idUsuario"), resultado.getString("nickname"), resultado.getString("saldo")};
+
+                    String rol = resultado.getString("rol");
+                    if (rol.equals("Cliente")) {
+                        catalogoGUI ver = new catalogoGUI();
+                        ver.setVisible(true);
+                        this.dispose();
+                        ver.lbUsuario.setText(resultado.getString("nickname"));
+                        ver.lbSaldo.setText(resultado.getString("saldo"));
+                        catalogoGUI.setUser(persona);
+                    } else {
+                        vistaVentasGUI ver = new vistaVentasGUI();
+                        ver.setVisible(true);
+                        this.dispose();
+                    }
                 } else {
-                    registroClientesGUI ver = new registroClientesGUI();
-                    ver.setVisible(true);
-                    this.dispose();
+                    JOptionPane.showMessageDialog(null, "Contraseña y/o Usuario incorrectos");
                 }
+            } catch (SQLException e) {
+                System.out.println(e);
             }
-        } catch (SQLException e) {
-            System.out.println(e);
         }
     }//GEN-LAST:event_btnIniciarActionPerformed
 
@@ -163,6 +193,10 @@ public class loginClientesGUI extends javax.swing.JFrame {
         ver.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegistrarmeActionPerformed
+
+    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btnCerrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -200,6 +234,7 @@ public class loginClientesGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnIniciar;
     private javax.swing.JButton btnRegistrarme;
     private javax.swing.JLabel jLabel1;
