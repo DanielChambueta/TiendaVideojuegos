@@ -2,13 +2,25 @@ package tiendaGUI;
 
 import conexion.conexion;
 import java.sql.*;
+import java.time.LocalDate;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class catalogoGUI extends javax.swing.JFrame {
 
+    private static int idVenta;
     DefaultTableModel model;
     private static JTable receptor = null;
+    private LocalDate fechaActual = LocalDate.now();
+    private static Object user[];
+
+    public static Object[] getUser() {
+        return user;
+    }
+
+    public static void setUser(Object[] user) {
+        catalogoGUI.user = user;
+    }
 
     /**
      * Creates new form catalogoGUI
@@ -28,8 +40,24 @@ public class catalogoGUI extends javax.swing.JFrame {
         model = new DefaultTableModel(null, cabecera);
         tblCesta.setModel(model);
 
+        //Fecha Actual
+        lbFecha.setText(String.valueOf(fechaActual));
+
         //Llena el combo box con los Videojuegos de la base de datos
         getListaJuegos();
+        
+        conexion objConexion = new conexion();
+        try {
+            ResultSet resultado = objConexion.consultarRegistros("SELECT * FROM ventas ORDER BY idVenta DESC LIMIT 1");
+            //Recorre la tabla con los resultados de la Sentencia Select
+            if (resultado.next()) {
+                idVenta = Integer.parseInt(String.valueOf(resultado.getString("idVenta")));
+                idVenta++;
+                System.out.println("Id de Venta: "+idVenta);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 
     /**
@@ -74,6 +102,8 @@ public class catalogoGUI extends javax.swing.JFrame {
         btnSalir = new javax.swing.JButton();
         lbUsuario = new javax.swing.JLabel();
         lbSaldo = new javax.swing.JLabel();
+        lbF = new javax.swing.JLabel();
+        lbFecha = new javax.swing.JLabel();
         Footer = new javax.swing.JPanel();
         DanielChambueta = new javax.swing.JLabel();
 
@@ -90,19 +120,21 @@ public class catalogoGUI extends javax.swing.JFrame {
         headLayout.setHorizontalGroup(
             headLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headLayout.createSequentialGroup()
-                .addContainerGap(108, Short.MAX_VALUE)
+                .addContainerGap(93, Short.MAX_VALUE)
                 .addComponent(Titulo)
-                .addGap(56, 56, 56))
+                .addGap(71, 71, 71))
         );
         headLayout.setVerticalGroup(
             headLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Titulo)
-                .addContainerGap())
+                .addGap(19, 19, 19))
         );
 
         InfoJuegos.setBackground(new java.awt.Color(230, 230, 230));
+
+        lbImgJuego.setBackground(new java.awt.Color(255, 255, 255));
 
         lbPrecio.setText("Precio: ");
 
@@ -171,16 +203,16 @@ public class catalogoGUI extends javax.swing.JFrame {
                                 .addGap(47, 47, 47)
                                 .addComponent(lbCanDisponible, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(InfoJuegosLayout.createSequentialGroup()
-                        .addGap(113, 113, 113)
+                        .addGap(112, 112, 112)
                         .addComponent(lbImgJuego, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 32, Short.MAX_VALUE))
         );
         InfoJuegosLayout.setVerticalGroup(
             InfoJuegosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(InfoJuegosLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lbImgJuego, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
+                .addComponent(lbImgJuego, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbListaJuegos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(lbNombreJuego)
@@ -197,7 +229,7 @@ public class catalogoGUI extends javax.swing.JFrame {
                     .addComponent(lbCantidad)
                     .addComponent(spCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbCanDisponible, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(InfoJuegosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnQuitar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -276,7 +308,7 @@ public class catalogoGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CestaLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbTituloCesta)
-                .addGap(139, 139, 139))
+                .addGap(144, 144, 144))
         );
         CestaLayout.setVerticalGroup(
             CestaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -284,7 +316,7 @@ public class catalogoGUI extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(lbTituloCesta, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
                 .addGroup(CestaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(CestaLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -327,6 +359,9 @@ public class catalogoGUI extends javax.swing.JFrame {
             }
         });
 
+        lbF.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lbF.setText("Fecha:");
+
         javax.swing.GroupLayout InfoUsuarioLayout = new javax.swing.GroupLayout(InfoUsuario);
         InfoUsuario.setLayout(InfoUsuarioLayout);
         InfoUsuarioLayout.setHorizontalGroup(
@@ -343,28 +378,31 @@ public class catalogoGUI extends javax.swing.JFrame {
                         .addGap(7, 7, 7)
                         .addGroup(InfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lbS)
-                            .addComponent(lbU))
-                        .addGap(0, 0, 0)
-                        .addGroup(InfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
-                            .addComponent(lbSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lbU)
+                            .addComponent(lbF))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(InfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lbSaldo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbFecha, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())))
         );
         InfoUsuarioLayout.setVerticalGroup(
             InfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(InfoUsuarioLayout.createSequentialGroup()
-                .addContainerGap(11, Short.MAX_VALUE)
-                .addGroup(InfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(10, 10, 10)
+                .addGroup(InfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbF)
+                    .addComponent(lbFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, Short.MAX_VALUE)
+                .addGroup(InfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbU)
                     .addComponent(lbUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
                 .addGroup(InfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(InfoUsuarioLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(lbS))
-                    .addGroup(InfoUsuarioLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(lbSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(lbS)
+                    .addComponent(lbSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
                 .addGroup(InfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCuenta)
                     .addComponent(btnSalir))
@@ -413,7 +451,7 @@ public class catalogoGUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(head, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(InfoUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(5, 5, 5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(InfoJuegos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Cesta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -503,12 +541,18 @@ public class catalogoGUI extends javax.swing.JFrame {
         }
     }
 
+    public void setVideojuego(Object[] juego) {
+
+    }
+
     private void btnCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCuentaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCuentaActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        // TODO add your handling code here:
+        loginClientesGUI ver = new loginClientesGUI();
+        ver.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
@@ -588,6 +632,86 @@ public class catalogoGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_tblCestaMouseClicked
 
     private void btnPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarActionPerformed
+        //Registro de la Venta en la Base de Datos
+        //Valida que existan articulos en la lista
+        if (model.getRowCount() > 0) {
+            int opcion = JOptionPane.showConfirmDialog(null, "Desea Finalizar su Compra por $" + lbTotal.getText(), "Finalizar la Compra", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+
+            if (opcion == 0) {
+                //Crea una conexion con la Base de Datos
+                conexion objConexion = new conexion();
+
+                double vDescuento = Double.parseDouble(lbDescuento.getText());
+                double vTotal = Double.parseDouble(lbTotal.getText());
+                //VENTA
+                idVenta++;
+                String idV = String.valueOf(idVenta);
+                //Select 
+                String strInsertVenta = String.format("INSERT INTO ventas(idVenta, usuario, fecha, descuento, total) "
+                        + "VALUES ('%s','%s','%s'," + vDescuento + "," + vTotal + ")", idV, user[0], fechaActual);
+                //Ejecucion de la Sentencia Insert
+                objConexion.ejecutarSentenciaSQL(strInsertVenta);
+
+                int count = model.getRowCount();
+                String idVid, nomVid;
+                int precVid, canVid;
+                int canD, subD;
+
+                //Calcula el Subtotal
+                for (int i = 0; count > i; i++) {
+                    nomVid = String.valueOf(model.getValueAt(i, 0));
+                    canD = Integer.parseInt(String.valueOf(model.getValueAt(i, 2)));
+                    subD = (int) Double.parseDouble(String.valueOf(model.getValueAt(i, 3)));
+                    System.out.println("Contidad registrada = " + canD);
+                    try {
+                        //Select
+                        String strSentenciaSelect = String.format("SELECT * FROM videojuegos WHERE nombreVideojuego = '%s'", nomVid);
+                        //Ejecucion de la Sentencia Select
+                        ResultSet resultado = objConexion.consultarRegistros(strSentenciaSelect);
+                        //Asigna la Respectiva Informacion del Juego
+                        if (resultado.next()) {
+                            idVid = resultado.getString("idVideojuego");
+//                        nomVid = resultado.getString("nombreVideojuego");
+                            precVid = resultado.getInt("precio");
+                            canVid = resultado.getInt("cantidad");
+
+                            //DETALLE VENTA
+                            String idD = String.valueOf(idVenta + "" + (i + 1));
+                            String strInsertDetalle = String.format("INSERT INTO detalleventas(idDetalle, venta, videojuego, cantidad, subtotal) "
+                                    + "VALUES('" + idD + "','" + idV + "', '" + idVid + "', " + canD + "," + subD + ")");
+                            //Ejecucion de la Sentencia Insert
+                            objConexion.ejecutarSentenciaSQL(strInsertDetalle);
+                            
+                            
+                            //DESCUENTO CANTIDAD
+                            canVid = canVid - canD;
+                            String strUpdateCantidad = String.format("UPDATE videojuegos SET cantidad="+ canVid + " WHERE idVideojuego='"+ idVid + "'");
+                            //Ejecucion de la Sentencia Update
+                            objConexion.ejecutarSentenciaSQL(strUpdateCantidad);
+                            
+                            //DESCUENTO SUELDO
+                            double sueldo = Double.parseDouble(String.valueOf(user[2]));
+                            sueldo = sueldo - vTotal;
+                            String strUpdateSaldo = String.format("UPDATE usuarios SET saldo="+ sueldo + " WHERE idUsuario='"+ user[0] + "'");
+                            //Ejecucion de la Sentencia Update
+                            objConexion.ejecutarSentenciaSQL(strUpdateSaldo);
+                            lbSaldo.setText(String.valueOf(sueldo));
+                            lbSubtotal.setText("0");
+                            lbDescuento.setText("0");
+                            lbTotal.setText("0");
+                        }
+                    } catch (SQLException e) {
+                        System.out.println(e);
+                    }
+                }
+                while (model.getRowCount() > 0) {
+                    model.removeRow(0);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Agregue articulos a la cesta de compra");
+        }
+
 
     }//GEN-LAST:event_btnPagarActionPerformed
 
@@ -657,6 +781,8 @@ public class catalogoGUI extends javax.swing.JFrame {
     private javax.swing.JLabel lbCategoria;
     private javax.swing.JLabel lbCompatibilidad;
     private javax.swing.JLabel lbDescuento;
+    private javax.swing.JLabel lbF;
+    private javax.swing.JLabel lbFecha;
     private javax.swing.JLabel lbImgJuego;
     private javax.swing.JLabel lbNombreJuego;
     private javax.swing.JLabel lbPrecio;

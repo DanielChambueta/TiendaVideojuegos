@@ -137,6 +137,8 @@ public class loginClientesGUI extends javax.swing.JFrame {
             ResultSet resultado = objConexion.consultarRegistros(strSentenciaSelect);
             //Asigna la Respectiva Informacion del Juego
             if (resultado.next()) {
+                Object persona[] = {resultado.getString("idUsuario"),resultado.getString("nickname"),resultado.getString("saldo")};
+                
                 String rol = resultado.getString("rol");
                 if (rol.equals("Cliente")) {
                     catalogoGUI ver = new catalogoGUI();
@@ -144,6 +146,7 @@ public class loginClientesGUI extends javax.swing.JFrame {
                     this.dispose();
                     ver.lbUsuario.setText(resultado.getString("nickname"));
                     ver.lbSaldo.setText(resultado.getString("saldo"));
+                    catalogoGUI.setUser(persona);
                 } else {
                     registroClientesGUI ver = new registroClientesGUI();
                     ver.setVisible(true);

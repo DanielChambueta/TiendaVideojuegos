@@ -5,9 +5,9 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 
 public class registroClientesGUI extends javax.swing.JFrame {
-    
-    public static int idUser = 7;
-    
+
+    public static int idUser;
+
     public registroClientesGUI() {
         initComponents();
         //Quita la opcion de Minimizar la ventana
@@ -16,6 +16,18 @@ public class registroClientesGUI extends javax.swing.JFrame {
         setResizable(false);
         //Pone un titulo a la ventana
         setTitle("Resgistro Clientes");
+        conexion objConexion = new conexion();
+        try {
+            ResultSet resultado = objConexion.consultarRegistros("SELECT COUNT(idUsuario) as cUsuarios FROM usuarios");
+            //Recorre la tabla con los resultados de la Sentencia Select
+            if (resultado.next()) {
+                idUser = Integer.parseInt(String.valueOf(resultado.getString("cUsuarios")));
+                idUser++;
+                System.out.println("Id de Usuario: "+idUser);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 
     /**
@@ -202,17 +214,16 @@ public class registroClientesGUI extends javax.swing.JFrame {
         if (txtCedula.getText().equals("") || txtNombres.getText().equals("") || txtApellidos.getText().equals("")
                 || txtCorreo.getText().equals("") || txtNickname.getText().equals("") || txtContra.getText().equals("") || txtContraV.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Llene todos los Campos Obligatorios");
-        }else{
-            if(txtContra.getText().equals(txtContraV.getText())){
+        } else {
+            if (txtContra.getText().equals(txtContraV.getText())) {
                 String sIdUsu = "CLIENTE" + idUser++;
-            //Select del Juego seleccionado en el ComboBox
-            String strSentenciaInsert = String.format("INSERT INTO usuarios(idUsuario, cedula, nombres, apellidos, celular, correo, nickname, pass, saldo, rol)"
-                    + "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d,'%s')", sIdUsu, txtCedula.getText(), txtNombres.getText(), txtApellidos.getText(),
-                    txtCelular.getText(), txtCorreo.getText(), txtNickname.getText(), txtContra.getText(), 100000, "Cliente");
-            //Ejecucion de la Sentencia Select
-            objConexion.ejecutarSentenciaSQL(strSentenciaInsert);
-            //Asigna la Respectiva Informacion del Juego*/
-            }else{
+                //Select del Juego seleccionado en el ComboBox
+                String strSentenciaInsert = String.format("INSERT INTO usuarios(idUsuario, cedula, nombres, apellidos, celular, correo, nickname, pass, saldo, rol)"
+                        + "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d,'%s')", sIdUsu, txtCedula.getText(), txtNombres.getText(), txtApellidos.getText(),
+                        txtCelular.getText(), txtCorreo.getText(), txtNickname.getText(), txtContra.getText(), 100000, "Cliente");
+                //Ejecucion de la Sentencia Select
+                objConexion.ejecutarSentenciaSQL(strSentenciaInsert);
+            } else {
                 JOptionPane.showMessageDialog(null, "Las Contraseñas no Coinciden");
             }
         }
